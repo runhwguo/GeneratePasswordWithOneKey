@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 public class Util {
-    public static final String KEY = "211228";
+    public static final String KEY = "YOUR KEY";
 
     private static final Random random = new Random();
 
