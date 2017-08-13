@@ -39,11 +39,11 @@ public class Main {
                 System.out.println(util.decode(scanner.nextLine()));
                 break;
             case 5:
-                System.out.println("请输入文件目录：");
+                System.out.println("请输入文件or目录：");
                 util.encode(scanner.nextLine(), true);
                 break;
             case 6:
-                System.out.println("请输入文件目录：");
+                System.out.println("请输入文件or目录：");
                 util.decode(scanner.nextLine(), true);
                 break;
             case 7:

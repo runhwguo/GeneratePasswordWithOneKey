@@ -3,6 +3,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 
@@ -65,9 +66,14 @@ public class Util {
         return new String(xorWithKey(Base64.decodeBase64(str), key.getBytes(StandardCharsets.UTF_8)));
     }
 
-    private void directorySecurityOperation(String dirStr, boolean cover, SecurityOperation operation) throws Exception {
-        File dir = FileUtils.getFile(dirStr);
-        Collection<File> files = FileUtils.listFiles(dir, LEGAL_EXTENSION, true);
+    private void securityOperation(String filePath, boolean cover, SecurityOperation operation) throws Exception {
+        File file = FileUtils.getFile(filePath);
+        Collection<File> files = null;
+        if (file.isDirectory()) {
+            files = FileUtils.listFiles(file, LEGAL_EXTENSION, true);
+        } else if (file.isFile()) {
+            files = Arrays.asList(file);
+        }
         for (File f : files) {
             String fileString = FileUtils.readFileToString(f, StandardCharsets.UTF_8);
             String transformString;
@@ -91,12 +97,12 @@ public class Util {
         }
     }
 
-    public void decode(String dirStr, boolean cover) throws Exception {
-        directorySecurityOperation(dirStr, cover, SecurityOperation.DECODE);
+    public void decode(String filePath, boolean cover) throws Exception {
+        securityOperation(filePath, cover, SecurityOperation.DECODE);
     }
 
-    public void encode(String dirStr, boolean cover) throws Exception {
-        directorySecurityOperation(dirStr, cover, SecurityOperation.ENCODE);
+    public void encode(String filePath, boolean cover) throws Exception {
+        securityOperation(filePath, cover, SecurityOperation.ENCODE);
     }
 
     private byte[] xorWithKey(byte[] a, byte[] key) {
