@@ -3,8 +3,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 
 public class Util {
@@ -41,14 +41,14 @@ public class Util {
         int count = 0; //生成的密码的长度
         // 密码字典
         char[] str = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789~!@#$%^&*()_+-=[]\\{}|;':\",./<>?".toCharArray();
-        String password = "";
+        StringBuilder password = new StringBuilder();
         while (count < len) {
             //生成 0 ~ 密码字典-1之间的随机数
             index = random.nextInt(str.length);
-            password += str[index];
+            password.append(str[index]);
             ++count;
         }
-        return password;
+        return password.toString();
     }
 
     public String getPasswordRandomLen() {
@@ -68,11 +68,13 @@ public class Util {
 
     private void securityOperation(String filePath, boolean cover, SecurityOperation operation) throws Exception {
         File file = FileUtils.getFile(filePath);
-        Collection<File> files = null;
+        Collection<File> files;
         if (file.isDirectory()) {
             files = FileUtils.listFiles(file, LEGAL_EXTENSION, true);
         } else if (file.isFile()) {
-            files = Arrays.asList(file);
+            files = Collections.singletonList(file);
+        } else {
+            throw new Exception(filePath + " 不是文件夹 or 文件");
         }
         for (File f : files) {
             String fileString = FileUtils.readFileToString(f, StandardCharsets.UTF_8);
