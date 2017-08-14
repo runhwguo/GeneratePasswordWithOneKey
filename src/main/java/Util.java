@@ -28,7 +28,7 @@ public class Util {
 
     private final Random random = new Random();
 
-    private final String[] LEGAL_EXTENSION = new String[]{"js"};
+    private final String[] LEGAL_EXTENSION = new String[]{"js", "txt"};
 
     private enum SecurityOperation {
         ENCODE,
@@ -76,33 +76,45 @@ public class Util {
         }
         for (File f : files) {
             String fileString = FileUtils.readFileToString(f, StandardCharsets.UTF_8);
-            String transformString;
-            switch (operation) {
-                case DECODE:
-                    transformString = decode(fileString);
-                    break;
-                case ENCODE:
-                    transformString = encode(fileString);
-                    break;
-                default:
-                    throw new Exception("not have this security operation");
-            }
-            if (cover) {
-                FileUtils.writeStringToFile(f, transformString, StandardCharsets.UTF_8);
+            final boolean isBase64 = Base64.isBase64(fileString);
+            // 防止一个文件多次被编码
+            if (isBase64 && operation == SecurityOperation.ENCODE) {
+                System.out.println(f.getName() + "是Base64编码，忽略加密操作...");
+            } else if (!isBase64 && operation == SecurityOperation.DECODE) {
+                System.out.println(f.getName() + "是明文文件，忽略解密操作...");
             } else {
-                String bakFilePath = f.getAbsolutePath() + ".bak";
-                File bakFile = FileUtils.getFile(bakFilePath);
-                FileUtils.writeStringToFile(bakFile, transformString, StandardCharsets.UTF_8);
+                String transformString;
+                switch (operation) {
+                    case DECODE:
+                        transformString = decode(fileString);
+                        break;
+                    case ENCODE:
+                        transformString = encode(fileString);
+                        break;
+                    default:
+                        throw new Exception("not have this security operation");
+                }
+                if (cover) {
+                    FileUtils.writeStringToFile(f, transformString, StandardCharsets.UTF_8);
+                } else {
+                    String bakFilePath = f.getAbsolutePath() + ".bak";
+                    File bakFile = FileUtils.getFile(bakFilePath);
+                    FileUtils.writeStringToFile(bakFile, transformString, StandardCharsets.UTF_8);
+                }
             }
         }
     }
 
-    public void decode(String filePath, boolean cover) throws Exception {
-        securityOperation(filePath, cover, SecurityOperation.DECODE);
+    public void decode(String[] filePaths, boolean cover) throws Exception {
+        for (String filePath : filePaths) {
+            securityOperation(filePath, cover, SecurityOperation.DECODE);
+        }
     }
 
-    public void encode(String filePath, boolean cover) throws Exception {
-        securityOperation(filePath, cover, SecurityOperation.ENCODE);
+    public void encode(String[] filePaths, boolean cover) throws Exception {
+        for (String filePath : filePaths) {
+            securityOperation(filePath, cover, SecurityOperation.ENCODE);
+        }
     }
 
     private byte[] xorWithKey(byte[] a, byte[] key) {

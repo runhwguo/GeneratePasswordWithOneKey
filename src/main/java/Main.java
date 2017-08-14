@@ -1,6 +1,10 @@
+import com.sun.corba.se.impl.orbutil.StackImpl;
+
 import java.util.Scanner;
 
 public class Main {
+    private static final String SPLIT_STRING = "\\s+";
+
     public static void main(String[] args) throws Exception {
         Util util = Util.getInstance();
 
@@ -23,6 +27,7 @@ public class Main {
             securityKey = scanner.nextLine();
             util.setKey(securityKey);
         }
+        String input;
         switch (menuNum) {
             case 1:
                 System.out.println(util.getPasswordRandomLen());
@@ -40,11 +45,14 @@ public class Main {
                 break;
             case 5:
                 System.out.println("请输入文件or目录：");
-                util.encode(scanner.nextLine(), true);
+                input = scanner.nextLine();
+
+                util.encode(input.trim().split(SPLIT_STRING), true);
                 break;
             case 6:
                 System.out.println("请输入文件or目录：");
-                util.decode(scanner.nextLine(), true);
+                input = scanner.nextLine();
+                util.decode(input.trim().split(SPLIT_STRING), true);
                 break;
             case 7:
                 break;
