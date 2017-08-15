@@ -1,5 +1,6 @@
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -69,12 +70,18 @@ public class Util {
     private void securityOperation(String filePath, boolean cover, SecurityOperation operation) throws Exception {
         File file = FileUtils.getFile(filePath);
         Collection<File> files;
-        if (file.isDirectory()) {
-            files = FileUtils.listFiles(file, LEGAL_EXTENSION, true);
-        } else if (file.isFile()) {
-            files = Collections.singletonList(file);
+        if (file.exists()) {
+            if (file.isDirectory()) {
+                files = FileUtils.listFiles(file, LEGAL_EXTENSION, true);
+            } else if (file.isFile()) {
+                files = Collections.singletonList(file);
+            } else {
+                System.out.println("Invalid file or directory");
+                return;
+            }
         } else {
-            throw new Exception(filePath + " 不是文件夹 or 文件");
+            System.out.println("Current os is " + SystemUtils.OS_NAME + " and " + filePath + " not exists");
+            return;
         }
         for (File f : files) {
             String fileString = FileUtils.readFileToString(f, StandardCharsets.UTF_8);
@@ -98,10 +105,12 @@ public class Util {
                 }
                 if (cover) {
                     FileUtils.writeStringToFile(f, transformString, StandardCharsets.UTF_8);
+                    System.out.println(f.getPath() + " 操作完成");
                 } else {
                     String bakFilePath = f.getAbsolutePath() + ".bak";
                     File bakFile = FileUtils.getFile(bakFilePath);
                     FileUtils.writeStringToFile(bakFile, transformString, StandardCharsets.UTF_8);
+                    System.out.println("创建" + bakFile.getPath() + " 操作完成");
                 }
             }
         }
@@ -119,11 +128,12 @@ public class Util {
         }
     }
 
-    private byte[] xorWithKey(byte[] a, byte[] key) {
-        byte[] out = new byte[a.length];
-        for (int i = 0; i < a.length; i++) {
-            out[i] = (byte) (a[i] ^ key[i % key.length]);
+    private byte[] xorWithKey(byte[] array, byte[] key) {
+        byte[] out = new byte[array.length];
+        for (int index = 0; index < array.length; index++) {
+            out[index] = (byte) (array[index] ^ key[index % key.length]);
         }
+
         return out;
     }
 }

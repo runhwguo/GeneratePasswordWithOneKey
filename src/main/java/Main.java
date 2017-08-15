@@ -1,5 +1,3 @@
-import com.sun.corba.se.impl.orbutil.StackImpl;
-
 import java.util.Scanner;
 
 public class Main {
