@@ -40,7 +40,7 @@ public class Util {
         int index;  //生成的随机数
         int count = 0; //生成的密码的长度
         // 密码字典
-        char[] str = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789~!@#$%^&*()_+-=[]\\{}|;':\",./<>?".toCharArray();
+        char[] str = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789~!@#$%^&*()_+-=[]\\{}|;:,./<>?".toCharArray();
         StringBuilder password = new StringBuilder();
         while (count < len) {
             //生成 0 ~ 密码字典-1之间的随机数
