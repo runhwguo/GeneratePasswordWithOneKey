@@ -33,6 +33,7 @@ public class Main {
                 System.out.println(util.getPasswordRandomLen());
                 break;
             case 2:
+                System.out.println("请输入密码长度：");
                 System.out.println(util.getPassword(scanner.nextInt()));
                 break;
             case 3:
