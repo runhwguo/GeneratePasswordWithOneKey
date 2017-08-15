@@ -1,12 +1,12 @@
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Random;
 
 public class Util {
     private static String key;
@@ -27,8 +27,6 @@ public class Util {
         key = k;
     }
 
-    private final Random random = new Random();
-
     private final String[] LEGAL_EXTENSION = new String[]{"js", "txt"};
 
     private enum SecurityOperation {
@@ -45,7 +43,7 @@ public class Util {
         StringBuilder password = new StringBuilder();
         while (count < len) {
             //生成 0 ~ 密码字典-1之间的随机数
-            index = random.nextInt(str.length);
+            index = RandomUtils.nextInt(0, str.length);
             password.append(str[index]);
             ++count;
         }
@@ -53,10 +51,7 @@ public class Util {
     }
 
     public String getPasswordRandomLen() {
-        int max = 20,
-                min = 10;
-        int len = random.nextInt(max) % (max - min + 1) + min;
-        return getPassword(len);
+        return getPassword(RandomUtils.nextInt(8, 15));
     }
 
     public String encode(String str) {

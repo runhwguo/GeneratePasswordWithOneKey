@@ -23,8 +23,8 @@ hs_err_pid*
 .idea
 .DS_Store
 .gradle/
-out/production/
 src/main/resources/
 src/test/
 temp
 test/
+out/
