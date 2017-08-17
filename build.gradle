@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    compile 'commons-codec:commons-codec:1.10'
+    compile 'commons-codec:commons-codec:+'
     compile "commons-io:commons-io:+"
-    compile "org.apache.commons:commons-lang3:3.6"
+    compile "org.apache.commons:commons-lang3:+"
 }
