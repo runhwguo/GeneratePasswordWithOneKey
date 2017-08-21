@@ -11,6 +11,6 @@ repositories {
 
 dependencies {
     compile 'commons-codec:commons-codec:+'
-    compile "commons-io:commons-io:+"
-    compile "org.apache.commons:commons-lang3:+"
+    compile 'commons-io:commons-io:+'
+    compile 'org.apache.commons:commons-lang3:+'
 }
