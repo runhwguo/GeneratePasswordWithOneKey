@@ -71,11 +71,11 @@ public class Util {
             } else if (file.isFile()) {
                 files = Collections.singletonList(file);
             } else {
-                System.out.println("Invalid file or directory");
+                System.err.println("Invalid file or directory");
                 return;
             }
         } else {
-            System.out.println("Current os is " + SystemUtils.OS_NAME + " and " + filePath + " not exists");
+            System.err.println("Current os is " + SystemUtils.OS_NAME + " and " + filePath + " not exists");
             return;
         }
         for (File f : files) {
@@ -96,7 +96,8 @@ public class Util {
                         transformString = encode(fileString);
                         break;
                     default:
-                        throw new Exception("not have this security operation");
+                        System.err.println("not have this security operation");
+                        return;
                 }
                 if (cover) {
                     FileUtils.writeStringToFile(f, transformString, StandardCharsets.UTF_8);
