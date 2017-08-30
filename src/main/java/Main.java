@@ -1,3 +1,4 @@
+import java.io.Console;
 import java.util.Scanner;
 
 public class Main {
@@ -19,11 +20,15 @@ public class Main {
         System.out.println("请选择操作项：");
         int menuNum = scanner.nextInt();
         scanner.nextLine();
-        String securityKey;
         if (menuNum >= 3 && menuNum <= 6) {
-            System.out.println("请输入密钥：");
-            securityKey = scanner.nextLine();
-            util.setKey(securityKey);
+            Console console = System.console();
+            if (console == null) {
+                System.out.println("Console object is not available, should in Console");
+                return;
+            }
+            char[] securityKey = console.readPassword("请输入密钥：");
+            System.out.println(securityKey);
+            util.setKey(new String(securityKey));
         }
         String input;
         switch (menuNum) {
