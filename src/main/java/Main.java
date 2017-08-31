@@ -27,7 +27,6 @@ public class Main {
                 return;
             }
             char[] securityKey = console.readPassword("请输入密钥：");
-            System.out.println(securityKey);
             util.setKey(new String(securityKey));
         }
         String input;
