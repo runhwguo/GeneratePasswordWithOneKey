@@ -1,4 +1,5 @@
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.SystemUtils;
@@ -9,7 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class Util {
-    private static String key;
+    private static byte[] key;
 
     private static Util instance;
 
@@ -24,7 +25,7 @@ public class Util {
     }
 
     public void setKey(String k) {
-        key = k;
+        key = StringUtils.getBytesUtf8(k);
     }
 
     private final String[] LEGAL_EXTENSION = new String[]{"js", "txt"};
@@ -55,11 +56,11 @@ public class Util {
     }
 
     public String encode(String str) {
-        return Base64.encodeBase64String(xorWithKey(str.getBytes(StandardCharsets.UTF_8), key.getBytes(StandardCharsets.UTF_8)));
+        return Base64.encodeBase64String(xorWithKey(StringUtils.getBytesUtf8(str), key));
     }
 
     public String decode(String str) {
-        return new String(xorWithKey(Base64.decodeBase64(str), key.getBytes(StandardCharsets.UTF_8)));
+        return new String(xorWithKey(Base64.decodeBase64(str), key));
     }
 
     private void securityOperation(String filePath, boolean cover, SecurityOperation operation) throws Exception {
@@ -79,8 +80,8 @@ public class Util {
             return;
         }
         for (File f : files) {
-            String fileString = FileUtils.readFileToString(f, StandardCharsets.UTF_8);
-            final boolean isBase64 = Base64.isBase64(fileString);
+            String fileContent = FileUtils.readFileToString(f, StandardCharsets.UTF_8);
+            final boolean isBase64 = Base64.isBase64(fileContent);
             // 防止一个文件多次被编码
             if (isBase64 && operation == SecurityOperation.ENCODE) {
                 System.out.println(f.getName() + "是Base64编码，忽略加密操作...");
@@ -90,10 +91,10 @@ public class Util {
                 String transformString;
                 switch (operation) {
                     case DECODE:
-                        transformString = decode(fileString);
+                        transformString = decode(fileContent);
                         break;
                     case ENCODE:
-                        transformString = encode(fileString);
+                        transformString = encode(fileContent);
                         break;
                     default:
                         System.err.println("not have this security operation");

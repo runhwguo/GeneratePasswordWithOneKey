@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Util util = Util.getInstance();
 
-        String menu = "1.随机生成密码\n" +
+        String menu = "1.generate random password\n" +
                 "2.随机生成指定长度密码\n" +
                 "3.对称加密字符串\n" +
                 "4.对称解密字符串\n" +
