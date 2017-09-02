@@ -5,21 +5,25 @@ public class Main {
     private static final String SPLIT_STRING = "\\s+";
 
     public static void main(String[] args) throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        int menuNum;
+        if (args != null && args.length == 1) {
+            menuNum = Integer.valueOf(args[0]);
+        } else {
+            String menu = "1.generate random password\n" +
+                    "2.随机生成指定长度密码\n" +
+                    "3.对称加密字符串\n" +
+                    "4.对称解密字符串\n" +
+                    "5.对称加密文件目录\n" +
+                    "6.对称解密文件目录\n" +
+                    "7.退出\n";
+            System.out.println(menu);
+            System.out.println("请选择操作项：");
+            menuNum = scanner.nextInt();
+            scanner.nextLine();
+        }
         Util util = Util.getInstance();
 
-        String menu = "1.generate random password\n" +
-                "2.随机生成指定长度密码\n" +
-                "3.对称加密字符串\n" +
-                "4.对称解密字符串\n" +
-                "5.对称加密文件目录\n" +
-                "6.对称解密文件目录\n" +
-                "7.退出\n";
-        System.out.println(menu);
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("请选择操作项：");
-        int menuNum = scanner.nextInt();
-        scanner.nextLine();
         if (menuNum >= 3 && menuNum <= 6) {
             Console console = System.console();
             if (console == null) {
